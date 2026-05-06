@@ -1,0 +1,28 @@
+{
+  "name": "@cordisjs/mail",
+  "version": "0.1.0",
+  "description": "Abstract Mail Service for Cordis",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Shigma <shigma10826@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordiverse/mail.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/cordiverse/mail/issues"
+  },
+  "homepage": "https://github.com/cordiverse/mail",
+  "peerDependencies": {
+    "cordis": "^4.0.0-rc.4"
+  },
+  "devDependencies": {
+    "cordis": "^4.0.0-rc.4"
+  }
+}
