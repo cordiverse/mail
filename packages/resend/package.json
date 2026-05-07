@@ -1,0 +1,33 @@
+{
+  "name": "@cordisjs/plugin-mail-resend",
+  "version": "0.2.0",
+  "description": "Resend provider for @cordisjs/mail",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "author": "Shigma <shigma10826@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordiverse/mail.git",
+    "directory": "packages/resend"
+  },
+  "bugs": {
+    "url": "https://github.com/cordiverse/mail/issues"
+  },
+  "homepage": "https://github.com/cordiverse/mail",
+  "peerDependencies": {
+    "@cordisjs/mail": "^0.2.0",
+    "cordis": "^4.0.0-rc.4"
+  },
+  "devDependencies": {
+    "@cordisjs/mail": "^0.2.0",
+    "cordis": "^4.0.0-rc.4"
+  },
+  "dependencies": {
+    "schemastery": "^3.18.0"
+  }
+}
