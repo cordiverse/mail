@@ -2,9 +2,16 @@ import { Context } from 'cordis'
 import { MailService } from '@cordisjs/mail'
 import z from 'schemastery'
 
+export interface Template {
+  subject: string
+  html: string
+}
+
 export interface Config extends MailService.Config {
   apiUser: string
   apiKey: string
+  /** Logical template name → {subject, html} with `{name}` placeholders */
+  templates?: Record<string, Template>
   /** Default: https://api.sendcloud.net/apiv2/mail/send */
   endpoint?: string
 }
@@ -15,6 +22,10 @@ export class SendcloudMailService extends MailService {
     fromName: z.string().description('发件人显示名称。'),
     apiUser: z.string().required().description('API User。'),
     apiKey: z.string().required().role('secret').description('API Key。'),
+    templates: z.dict(z.object({
+      subject: z.string().required().description('邮件标题模板。'),
+      html: z.string().required().description('邮件正文 HTML 模板。'),
+    })).default({}).description('模板映射（逻辑名 → subject + html, 使用 {变量名} 占位）。'),
     endpoint: z.string().default('https://api.sendcloud.net/apiv2/mail/send').description('API 端点。'),
   })
 
@@ -22,7 +33,7 @@ export class SendcloudMailService extends MailService {
     super(ctx, config)
   }
 
-  async send(to: string, subject: string, html: string) {
+  async sendHtml(to: string, subject: string, html: string) {
     const {
       apiUser,
       apiKey,

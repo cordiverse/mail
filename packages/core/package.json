@@ -1,6 +1,6 @@
 {
   "name": "@cordisjs/mail",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Abstract Mail Service for Cordis",
   "type": "module",
   "main": "lib/index.js",

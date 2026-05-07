@@ -85,7 +85,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
       from: 'noreply@test.local',
     })
 
-    await ctx.mail.send('alice@example.com', 'Hello', '<p>hi</p>')
+    await ctx.mail.sendHtml!('alice@example.com', 'Hello', '<p>hi</p>')
     const msg = await mock.received
     expect(msg.from).toContain('noreply@test.local')
     expect(msg.to).toContain('alice@example.com')
@@ -104,7 +104,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
       fromName: 'Test Bot',
     })
 
-    await ctx.mail.send('alice@example.com', 'Hi', '<p>hi</p>')
+    await ctx.mail.sendHtml!('alice@example.com', 'Hi', '<p>hi</p>')
     const msg = await mock.received
     expect(msg.from).toMatch(/Test Bot.*<noreply@test\.local>/)
   })
@@ -120,9 +120,47 @@ describe('@cordisjs/plugin-mail-smtp', () => {
       auth: { user: 'u', pass: 'p' },
     })
 
-    await ctx.mail.send('alice@example.com', 'Hi', '<p>hi</p>')
+    await ctx.mail.sendHtml!('alice@example.com', 'Hi', '<p>hi</p>')
     await mock.received
     expect(mock.authSeen).toEqual({ user: 'u', pass: 'p' })
+  })
+
+  it('renders a registered template and sends it', async () => {
+    mock = await startMockSmtp()
+    const ctx = new Context()
+    await ctx.plugin(SmtpMailService, {
+      host: '127.0.0.1',
+      port: mock.port,
+      secure: false,
+      from: 'noreply@test.local',
+      templates: {
+        welcome: {
+          subject: 'Hi {name}',
+          html: '<p>Welcome, {name}! Your code is {code}.</p>',
+        },
+      },
+    })
+
+    await ctx.mail.sendTemplate('alice@example.com', 'welcome', { name: 'Alice', code: '1234' })
+    const msg = await mock.received
+    expect(msg.subject).toBe('Hi Alice')
+    expect(msg.html).toContain('Welcome, Alice!')
+    expect(msg.html).toContain('Your code is 1234.')
+  })
+
+  it('throws on an unknown template name', async () => {
+    mock = await startMockSmtp()
+    const ctx = new Context()
+    await ctx.plugin(SmtpMailService, {
+      host: '127.0.0.1',
+      port: mock.port,
+      secure: false,
+      from: 'noreply@test.local',
+    })
+
+    await expect(
+      ctx.mail.sendTemplate('alice@example.com', 'nope', {}),
+    ).rejects.toThrow(/Unknown mail template: nope/)
   })
 
   it('closes the transporter when the plugin disposes', async () => {

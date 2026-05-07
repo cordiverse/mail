@@ -3,6 +3,11 @@ import nodemailer, { type Transporter } from 'nodemailer'
 import { MailService } from '@cordisjs/mail'
 import z from 'schemastery'
 
+export interface Template {
+  subject: string
+  html: string
+}
+
 export interface Config extends MailService.Config {
   host: string
   port?: number
@@ -12,6 +17,8 @@ export interface Config extends MailService.Config {
     user: string
     pass: string
   }
+  /** Logical template name → {subject, html} with `{name}` placeholders */
+  templates?: Record<string, Template>
 }
 
 export class SmtpMailService extends MailService {
@@ -25,6 +32,10 @@ export class SmtpMailService extends MailService {
       user: z.string().description('登录用户名。'),
       pass: z.string().role('secret').description('登录密码或授权码。'),
     }).description('登录凭据。'),
+    templates: z.dict(z.object({
+      subject: z.string().required().description('邮件标题模板。'),
+      html: z.string().required().description('邮件正文 HTML 模板。'),
+    })).default({}).description('模板映射（逻辑名 → subject + html, 使用 {变量名} 占位）。'),
   })
 
   transporter: Transporter
@@ -40,7 +51,7 @@ export class SmtpMailService extends MailService {
     ctx.effect(() => () => this.transporter.close())
   }
 
-  async send(to: string, subject: string, html: string) {
+  async sendHtml(to: string, subject: string, html: string) {
     const { from, fromName } = this.config
     const fromField = fromName ? `"${fromName}" <${from}>` : from
     await this.transporter.sendMail({ from: fromField, to, subject, html })

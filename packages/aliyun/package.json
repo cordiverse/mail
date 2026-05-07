@@ -1,6 +1,6 @@
 {
   "name": "@cordisjs/plugin-mail-aliyun",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Alibaba Cloud DirectMail provider for @cordisjs/mail",
   "type": "module",
   "main": "lib/index.js",
@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/cordiverse/mail",
   "peerDependencies": {
-    "@cordisjs/mail": "^0.1.0",
+    "@cordisjs/mail": "^0.2.0",
     "cordis": "^4.0.0-rc.4"
   },
   "devDependencies": {
-    "@cordisjs/mail": "^0.1.0",
+    "@cordisjs/mail": "^0.2.0",
     "cordis": "^4.0.0-rc.4"
   },
   "dependencies": {

@@ -3,6 +3,11 @@ import { createHmac, randomUUID } from 'node:crypto'
 import { MailService } from '@cordisjs/mail'
 import z from 'schemastery'
 
+export interface Template {
+  subject: string
+  html: string
+}
+
 export interface Config extends MailService.Config {
   accessKeyId: string
   accessKeySecret: string
@@ -12,6 +17,8 @@ export interface Config extends MailService.Config {
   replyToAddress?: boolean
   /** Optional tag for the DirectMail console */
   tagName?: string
+  /** Logical template name → {subject, html} with `{name}` placeholders */
+  templates?: Record<string, Template>
   /** Default: https://dm.aliyuncs.com */
   endpoint?: string
 }
@@ -28,6 +35,10 @@ export class AliyunMailService extends MailService {
     ]).default(1).description('发信地址类型: 0 随机地址, 1 发信地址。'),
     replyToAddress: z.boolean().default(false).description('是否使用回信地址。'),
     tagName: z.string().description('邮件标签 (控制台查询用)。'),
+    templates: z.dict(z.object({
+      subject: z.string().required().description('邮件标题模板。'),
+      html: z.string().required().description('邮件正文 HTML 模板。'),
+    })).default({}).description('模板映射（逻辑名 → subject + html, 使用 {变量名} 占位）。'),
     endpoint: z.string().default('https://dm.aliyuncs.com').description('API 端点。'),
   })
 
@@ -35,7 +46,7 @@ export class AliyunMailService extends MailService {
     super(ctx, config)
   }
 
-  async send(to: string, subject: string, html: string) {
+  async sendHtml(to: string, subject: string, html: string) {
     const {
       accessKeyId,
       accessKeySecret,
