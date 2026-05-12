@@ -1,4 +1,5 @@
 import { Context } from 'cordis'
+import LoggerConsole from '@cordisjs/plugin-logger-console'
 import { simpleParser } from 'mailparser'
 import { SMTPServer } from 'smtp-server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -78,6 +79,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('sends an HTML mail through the configured server', async () => {
     mock = await startMockSmtp()
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,
@@ -96,6 +98,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('formats fromName as an RFC 5322 display name', async () => {
     mock = await startMockSmtp()
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,
@@ -112,6 +115,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('authenticates when auth is configured', async () => {
     mock = await startMockSmtp({ requireAuth: true })
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,
@@ -128,6 +132,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('renders a registered template and sends it', async () => {
     mock = await startMockSmtp()
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,
@@ -151,6 +156,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('throws on an unknown template name', async () => {
     mock = await startMockSmtp()
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,
@@ -166,6 +172,7 @@ describe('@cordisjs/plugin-mail-smtp', () => {
   it('closes the transporter when the plugin disposes', async () => {
     mock = await startMockSmtp()
     const ctx = new Context()
+    ctx.plugin(LoggerConsole)
     await ctx.plugin(SmtpMailService, {
       host: '127.0.0.1',
       port: mock.port,

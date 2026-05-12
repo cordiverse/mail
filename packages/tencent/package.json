@@ -1,6 +1,6 @@
 {
   "name": "@cordisjs/plugin-mail-tencent",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Tencent Cloud SES provider for @cordisjs/mail",
   "type": "module",
   "main": "lib/index.js",
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/cordiverse/mail",
   "peerDependencies": {
-    "@cordisjs/mail": "^0.2.0",
-    "cordis": "^4.0.0-rc.4"
+    "@cordisjs/mail": "^0.2.1",
+    "cordis": "^4.0.0-rc.5"
   },
   "devDependencies": {
-    "@cordisjs/mail": "^0.2.0",
-    "cordis": "^4.0.0-rc.4"
+    "@cordisjs/mail": "^0.2.1",
+    "cordis": "^4.0.0-rc.5"
   },
   "dependencies": {
     "schemastery": "^3.18.0"

@@ -1,6 +1,5 @@
 import { Context } from 'cordis'
 import { MailService } from '@cordisjs/mail'
-import type {} from '@cordisjs/plugin-logger'
 import z from 'schemastery'
 
 declare module 'cordis' {
@@ -13,11 +12,12 @@ declare module 'cordis' {
 export interface Config extends MailService.Config {}
 
 export class MockMailService extends MailService {
+  static name = 'mail:mock'
+
   static Config: z<Config> = z.object({
     from: z.string().default('mock@mock.local').description('发件人邮箱地址。'),
     fromName: z.string().description('发件人显示名称。'),
   })
-  static inject = ['logger']
 
   constructor(ctx: Context, public config: Config) {
     super(ctx, config)

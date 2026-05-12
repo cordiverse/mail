@@ -22,6 +22,8 @@ export interface Config extends MailService.Config {
 }
 
 export class SmtpMailService extends MailService {
+  static name = 'mail:smtp'
+
   static Config: z<Config> = z.object({
     from: z.string().required().description('发件人邮箱地址。'),
     fromName: z.string().description('发件人显示名称。'),
@@ -52,6 +54,7 @@ export class SmtpMailService extends MailService {
   }
 
   async sendHtml(to: string, subject: string, html: string) {
+    this.ctx.logger.debug('send html to %s subject %s: %s', to, subject, html)
     const { from, fromName } = this.config
     const fromField = fromName ? `"${fromName}" <${from}>` : from
     await this.transporter.sendMail({ from: fromField, to, subject, html })

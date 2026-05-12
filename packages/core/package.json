@@ -1,6 +1,6 @@
 {
   "name": "@cordisjs/mail",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Abstract Mail Service for Cordis",
   "type": "module",
   "main": "lib/index.js",
@@ -20,9 +20,10 @@
   },
   "homepage": "https://github.com/cordiverse/mail",
   "peerDependencies": {
-    "cordis": "^4.0.0-rc.4"
+    "cordis": "^4.0.0-rc.5"
   },
   "devDependencies": {
-    "cordis": "^4.0.0-rc.4"
+    "@cordisjs/plugin-logger-console": "^1.0.0",
+    "cordis": "^4.0.0-rc.5"
   }
 }

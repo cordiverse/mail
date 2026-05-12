@@ -1,6 +1,6 @@
 {
   "name": "@cordisjs/plugin-mail-smtp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "SMTP mail provider (nodemailer) for @cordisjs/mail",
   "type": "module",
   "main": "lib/index.js",
@@ -20,19 +20,20 @@
   },
   "homepage": "https://github.com/cordiverse/mail",
   "peerDependencies": {
-    "@cordisjs/mail": "^0.2.0",
-    "cordis": "^4.0.0-rc.4"
+    "@cordisjs/mail": "^0.2.1",
+    "cordis": "^4.0.0-rc.5"
   },
   "dependencies": {
     "nodemailer": "^8.0.7",
     "schemastery": "^3.18.0"
   },
   "devDependencies": {
-    "@cordisjs/mail": "^0.2.0",
+    "@cordisjs/mail": "^0.2.1",
+    "@cordisjs/plugin-logger-console": "^1.0.0",
     "@types/mailparser": "^3.4.6",
     "@types/nodemailer": "^8.0.0",
     "@types/smtp-server": "^3.5.13",
-    "cordis": "^4.0.0-rc.4",
+    "cordis": "^4.0.0-rc.5",
     "mailparser": "^3.9.8",
     "smtp-server": "^3.18.4"
   }

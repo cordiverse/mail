@@ -26,6 +26,8 @@ export interface Config extends MailService.Config {
 }
 
 export class TencentMailService extends MailService {
+  static name = 'mail:tencent'
+
   static Config: z<Config> = z.object({
     from: z.string().required().description('发件人邮箱地址。'),
     fromName: z.string().description('发件人显示名称。'),
@@ -42,9 +44,10 @@ export class TencentMailService extends MailService {
     super(ctx, config)
   }
 
-  async sendTemplate(to: string, name: string, variables: Record<string, string> = {}) {
-    const template = this.config.templates[name]
-    if (!template) throw new Error(`Unknown mail template: ${name}`)
+  async sendTemplate(to: string, templateId: string, variables: Record<string, string> = {}) {
+    this.ctx.logger.debug('send template %s: %o', templateId, variables)
+    const template = this.config.templates[templateId]
+    if (!template) throw new Error(`Unknown mail template: ${templateId}`)
 
     const {
       secretId,

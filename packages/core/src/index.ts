@@ -1,5 +1,4 @@
 import { Context, Service } from 'cordis'
-
 declare module 'cordis' {
   interface Context {
     mail: MailService
@@ -12,6 +11,8 @@ export function renderTemplate(template: string, variables: Record<string, strin
 }
 
 export abstract class MailService extends Service {
+  static name = 'mail'
+
   constructor(ctx: Context, public config: MailService.Config) {
     super(ctx, 'mail')
   }
@@ -24,21 +25,22 @@ export abstract class MailService extends Service {
    * forwards to `sendHtml`. Drivers backed by a native cloud template system
    * (e.g. tencent SES) override this.
    */
-  async sendTemplate(to: string, name: string, variables: Record<string, string> = {}): Promise<void> {
+  async sendTemplate(to: string, templateId: string, variables: Record<string, string> = {}): Promise<void> {
+    this.ctx.logger.debug('send template %s: %o', templateId, variables)
     if (!this.sendHtml) {
       throw new Error(
         `${this.constructor.name} does not implement sendTemplate or sendHtml — override one of them.`,
       )
     }
-    const templates = (this.config as { templates?: Record<string, { subject: string; html: string }> }).templates
-    const tmpl = templates?.[name]
-    if (!tmpl || typeof tmpl.subject !== 'string' || typeof tmpl.html !== 'string') {
-      throw new Error(`Unknown mail template: ${name}`)
+    const templates = (this.config as any).templates as Record<string, { subject: string; html: string }>
+    const template = templates?.[templateId]
+    if (!template || typeof template.subject !== 'string' || typeof template.html !== 'string') {
+      throw new Error(`Unknown mail template: ${templateId}`)
     }
     await this.sendHtml(
       to,
-      renderTemplate(tmpl.subject, variables),
-      renderTemplate(tmpl.html, variables),
+      renderTemplate(template.subject, variables),
+      renderTemplate(template.html, variables),
     )
   }
 

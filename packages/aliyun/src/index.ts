@@ -24,6 +24,8 @@ export interface Config extends MailService.Config {
 }
 
 export class AliyunMailService extends MailService {
+  static name = 'mail:aliyun'
+
   static Config: z<Config> = z.object({
     from: z.string().required().description('发件人邮箱地址。'),
     fromName: z.string().description('发件人显示名称。'),
@@ -47,6 +49,7 @@ export class AliyunMailService extends MailService {
   }
 
   async sendHtml(to: string, subject: string, html: string) {
+    this.ctx.logger.debug('send html to %s subject %s: %s', to, subject, html)
     const {
       accessKeyId,
       accessKeySecret,
